@@ -21,7 +21,7 @@
 		Issam Amal \\
 		Cyril Monmouton \\
 		Marouane Denguiri \\
-		Mohamed Amine Zehri \\
+		Mohamed Amine Zahir \\
 		Abdelhamid Belarbi
 	\end{center}
 	\vspace*{\fill}
@@ -53,7 +53,7 @@
 				(= terme non préférentiel ou
 				synonyme).
 				\item[\emph{Microthésaurus} :] ensemble de descripteurs reliés au même concept. Noté \emph{MT}.
-				\item[\emph{Thésaurus} :] ensemble de microthésaurus.
+				\item[\emph{Thésaurus} :] ensemble de micro-thésaurus.
 			\end{description}
 		\end{subsection}
 		
@@ -62,7 +62,7 @@
 			\begin{description}
 				\item[\emph{EP (Employé Pour)} :] relation entre un descripteur et le (ou les) non-descripteur qu'il référence.
 				\item[\emph{EM (Employer)} :] relation entre un non-descripteur et son descripteur (symétrique de la relation précédente).
-				\item[\emph{TA (Terme Associé)} :] relation entre des descripteurs appartenants à des microthésaurus différents, mais entre lesquels peuvent exister des
+				\item[\emph{TA (Terme Associé)} :] relation entre des descripteurs appartenants à des micro-thésaurus différents, mais entre lesquels peuvent exister des
 				proximités sémantiques.
 				\item[\emph{TS (Terme Spécifique)} :] relation entre un descripteur plus général et un (ou plusieurs) descripteur plus spécifique.
 				\item[\emph{TG (Terme Général)} :] relation entre un descripteur plus spécifique et un descripteur plus général (symétrique de la relation précédente).
@@ -72,7 +72,7 @@
 		\begin{subsection}{Pour les modes d'indexation}
 			\begin{description}
 				\item[\emph{Liste alphabétique structurée} :] Les descripteurs sont affichés par ordre alphabétique avec leur relations sémantiques.
-				\item[\emph{Liste par microthésaurus} :] Les descripteurs sont affichés hiérarchiquement, du plus général au plus spécifique.
+				\item[\emph{Liste par micro-thésaurus} :] Les descripteurs sont affichés hiérarchiquement, du plus général au plus spécifique.
 				\item[\emph{Liste alphabétique permutée} :] Les termes sont affichés selon les notions dans lesquelles ils apparaissent.
 			\end{description}
 		\end{subsection}
@@ -99,7 +99,16 @@
 			\end{center}
 		\end{figure}~\\
 		
-		\emph{Remarque} : lier des termes revient à préciser les différentes relations décrites dans la sous-section \ref{glouglou}.
+		\begin{subsection}{Analyse textuelle}
+			Quelques précisions s'imposent quant au diagramme précédent.\\
+			\begin{itemize}
+				\item L'utilisateur est un simple visiteur anonyme.
+				\item La recherche s'effectue en spécifiant un mot-clé et un mode d'affichage (d'indexation).
+				\item Visualiser un thésaurus revient soit à le voir en entier avec tout les termes de la base,
+					soit un seul micro-thésaurus, soit un seul terme avec tous les termes auxquels il est lié.
+				\item Lorsque l'administrateur ajoute ou modifie un terme, il peut spécifer le micro-thésaurus auquel il appartient d'où les flèches \emph{<<extends>>}.
+			\end{itemize}
+		\end{subsection}
 	\end{section}
 	
 	\begin{section}{Diagramme des classes}
