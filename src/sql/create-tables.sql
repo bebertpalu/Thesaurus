@@ -1,11 +1,11 @@
 -- On suppose que la base de données est crée et que l'on y est connecté.
 -- Création des types.
-CREATE TYPE Terme_t 
+CREATE OR REPLACE TYPE Terme_t AS OBJECT
 (
     libelle VARCHAR(50)
 );
 
-CREATE TYPE Descripteur_t UNDER Terme_t
+CREATE OR REPLACE TYPE Descripteur_t UNDER Terme_t
 (
     EP LIST(REF NonDescripteur_t),
     TA LIST(REF Descripteur_t),
@@ -13,18 +13,18 @@ CREATE TYPE Descripteur_t UNDER Terme_t
     TG REF Descripteur_t
 );
 
-CREATE TYPE NonDescripteur_t UNDER Terme_t
+CREATE OR REPLACE TYPE NonDescripteur_t UNDER Terme_t
 (
     EM REF Descripteur_t
 );
 
-CREATE TYPE Microthesaurus_t
+CREATE TYPE Microthesaurus_t AS OBJECT
 (
     concept VARCHAR(50),
     descripteurs LIST(REF Descripteur_t)
 );
 
-CREATE TYPE Thesaurus_t
+CREATE TYPE Thesaurus_t AS OBJECT
 (
     titre VARCHAR(50),
     microthesaurus LIST(REF Microthesaurus_t)
