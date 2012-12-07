@@ -5,7 +5,7 @@
 
         echo '
         <div>
-                <h2>titi'.$recuperer_res().'</h2>
+                <h2>titi'.recuperer_res().'</h2>
         </div>';
 
 ?>
