@@ -3,6 +3,10 @@
 <!------------------------------------------------------- Section contenaire gauche ----------------------------------------------->
 <section class="container">
       
+	  
+	  
+	  
+	  
       <div class="sidebar1">
         <h2>Recherche</h2>
         <div class="sidebarTextBlock">
