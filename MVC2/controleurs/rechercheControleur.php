@@ -3,6 +3,7 @@
 if(isset($_POST['keyword']) && !empty($_POST['keyword'])) 
 {
 	include_once 'modeles/Modele.php';
+	
 	$modele = new Modele();
 	//On charge le model demandé
 	$RechercheModel = $modele->loadModele('Recherche');

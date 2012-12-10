@@ -8,10 +8,24 @@ include_once 'global/init.php';
 	<head>
 		<meta http-equiv=”Content-Language” content=”fr” charset=UTF-8” />
 		<title>Projet BDD</title>
-		<link rel="stylesheet" type="text/css" media="screen" href="ecran.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
 	</head>
 
 	<body>
+	
+	<header class="container">
+    <h1>Thesaurus</h1>
+    <nav>
+        <ul id="navlist">
+            <li id="active"><a href="#">Accuei</a></li>
+            <li><a href="#">Recherche</a></li>
+            <li><a href="#">Info</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  
+  
 
 
 <?php
@@ -27,5 +41,11 @@ else
 }
 
 ?>
+
+ <footer class="container">
+    <p>Copyright &copy; Groupe. All rights reserved. Design by <a href="#" title="J'ai rien mis">Thesaurus</a> 
+            <a class="footerLink" href="http://validator.w3.org/check/referer" title="This page validates as HTML5"><abbr title="HyperText Markup Language">HTML5</abbr></a> | 
+            <a class="footerLink" href="http://jigsaw.w3.org/css-validator/check/referer" title="This page validates as CSS"><abbr title="Cascading Style Sheets">CSS3</abbr></a></p>
+  </footer>
 	</body>
 </html>
