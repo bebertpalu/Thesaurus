@@ -12,11 +12,11 @@
         <div class="sidebarTextBlock">
 		
 		<div id="recherche">
-			<form action="?page=recherche" method="POST" >
+			<form action="?page=resultat" method="POST" >
 				
-				<input type= "radio" name="tarif" value="#"> Opt1
-				<input type= "radio" name="tarif" value="#"> Opt2
-				<input type= "radio" name="tarif" value="#"> Opt3
+				<input type= "radio" name="vue" value="vue1"> Opt1
+				<input type= "radio" name="vue" value="vue2"> Opt2
+				<input type= "radio" name="vue" value="vue3"> Opt3
 				<input type="text" name="keyword" size='20'>
 				<input type="submit" value="Rechecher">
 				

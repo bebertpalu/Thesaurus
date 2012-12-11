@@ -37,7 +37,7 @@ if (!empty($_GET['page']) && is_file('controleurs/'.$_GET['page'].'Controleur.ph
 }
 else
 {
-	include_once 'controleurs/accueilControleur.php';
+	include_once 'controleurs/rechercheControleur.php';
 }
 
 ?>

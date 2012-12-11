@@ -6,7 +6,7 @@ Class Modele {
 
 	public function __construct() 
 	{
-		// $pdo = PDO2::getInstance();
+		$pdo = PDO2::getInstance();
 	}
 
 	function loadModele($nameModel) 
