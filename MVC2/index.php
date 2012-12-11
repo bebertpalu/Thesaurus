@@ -29,7 +29,6 @@ include_once 'global/init.php';
 
 
 <?php
-
 //On inclut le contrôleur s'il existe et s'il est spécifié
 if (!empty($_GET['page']) && is_file('controleurs/'.$_GET['page'].'Controleur.php'))
 {

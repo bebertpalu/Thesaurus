@@ -3,7 +3,7 @@
 include_once 'modeles/Modele.php';
 $modele = new Modele();
 //On charge le model demandé
-$AccueilModel = $modele->loadModele('Recherche');
+$AccueilModel = $modele->loadModel('Recherche');
 
 
 

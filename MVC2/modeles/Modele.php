@@ -6,14 +6,15 @@ Class Modele {
 
 	public function __construct() 
 	{
-		$pdo = PDO2::getInstance();
+		$this->pdo = PDO2::getInstance();
 	}
 
-	function loadModele($nameModel) 
+	function loadModel($nameModel) 
 	{
 		$nameModel = ucfirst($nameModel).'Modele';
 		include "modeles/$nameModel.php";
 		$model = new $nameModel();
+		//die(var_dump($model));
 		return $model;
 	}
 

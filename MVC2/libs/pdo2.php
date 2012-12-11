@@ -27,6 +27,7 @@ class PDO2 extends PDO {
 			} catch (PDOException $e) {
 			
 				echo $e;
+				//die('Erreur de connexion à la base : '.$e->getMessage());
 			}
 		} 
 		return self::$_instance; 

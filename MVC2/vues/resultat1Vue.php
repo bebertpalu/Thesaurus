@@ -7,7 +7,11 @@
 
 	<div id="resultat">
 		<p> Resultat pour le descripteur : <?php echo $resultat['keyword']; ?> <br/>
-			<?php echo $resultat['resultat']; ?>
+			<?php
+				foreach ($resultat['resultat'] as $value) {
+					echo $value.'<br/>';
+				}
+			?>
 
 		</p>
 		</br>

@@ -7,6 +7,6 @@ include_once 'config.php';
 
 
 // Inclusion de Pdo2, potentiellement utile partout
-include(dirname(__FILE__).'/../libs/pdo2.php');
+include '/libs/pdo2.php';
 
 ?>

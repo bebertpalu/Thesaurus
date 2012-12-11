@@ -7,10 +7,10 @@ if(isset($_POST['keyword']) && !empty($_POST['keyword']))
 	include_once 'modeles/Modele.php';	
 	$modele = new Modele();
 	//On charge le model demandé
-	$ResultatModel = $modele->loadModele('Resultat');
+	$ResultatModele = $modele->loadModel('Resultat');
 
 
-	$resultat = $ResultatModel->exemple_requete($_POST['keyword']);
+	$resultat = $ResultatModele->exemple_requete($_POST['keyword']);
 
 	if(isset($_POST['vue']) && $_POST['vue'] == "vue1"){
 

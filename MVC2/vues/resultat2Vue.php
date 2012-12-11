@@ -1,4 +1,4 @@
-<h1>Resultat Vue 2</h1>
+<h1>Resultat Vue 1</h1>
  
 <div id="toto">
 	<div id="tata">
@@ -7,7 +7,11 @@
 
 	<div id="resultat">
 		<p> Resultat pour le descripteur : <?php echo $resultat['keyword']; ?> <br/>
-			<?php echo $resultat['resultat']; ?>
+			<?php
+				foreach ($resultat['resultat'] as $value) {
+					echo $value.'<br/>';
+				}
+			?>
 
 		</p>
 		</br>
