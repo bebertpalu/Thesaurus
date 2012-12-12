@@ -1,7 +1,5 @@
-
 <?php
 include_once 'global/init.php';
-//include_once "global/init.php";
 ?>
 <!DOCTYPE html>
 <html>
