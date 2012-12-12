@@ -13,6 +13,11 @@
 		
 		<div id="recherche">
 			<form action="?page=resultat" method="POST" >
+			<select>
+				<option selected>option1</option>
+				<option>option2</option>
+				<option>option3</option>
+			</select>
 				
 				<input type= "radio" name="vue" value="vue1"> Opt1
 				<input type= "radio" name="vue" value="vue2"> Opt2
