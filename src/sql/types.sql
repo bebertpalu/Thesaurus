@@ -1,15 +1,8 @@
-DROP TYPE Microthesaurus_t;
-DROP TYPE Descripteur_t FORCE;
-DROP TYPE NonDescripteur_t FORCE;
-DROP TYPE ListeNonDescripteurs_t FORCE;
-DROP TYPE ListeDescripteurs_t FORCE;
-DROP TYPE Terme_t FORCE;
+/*
+ * Auteur : Abdelhamid Belarbi
+ * Script de création des types.
+ */
 
-DROP TABLE Descripteur;
-DROP TABLE NonDescripteur;
-DROP TABLE Microthesaurus;
-
-/* Création des types. */
 CREATE OR REPLACE TYPE Terme_t AS OBJECT
 (
     libelle VARCHAR(50)
@@ -23,10 +16,10 @@ CREATE OR REPLACE TYPE NonDescripteur_t UNDER Terme_t ();
 CREATE OR REPLACE TYPE Descripteur_t UNDER Terme_t ();
 /
 
--- Tables imbriquées.
-CREATE OR REPLACE TYPE ListeNonDescripteurs_t AS VARRAY(10) OF REF NonDescripteur_t;
+-- Les tables imbriquées.
+CREATE OR REPLACE TYPE ListeNonDescripteurs_t AS TABLE OF REF NonDescripteur_t;
 /
-CREATE OR REPLACE TYPE ListeDescripteurs_t AS VARRAY(10) OF REF Descripteur_t;
+CREATE OR REPLACE TYPE ListeDescripteurs_t AS TABLE OF REF Descripteur_t;
 /
 
 -- On peut maintenant bien définir les types.
@@ -49,5 +42,16 @@ CREATE OR REPLACE TYPE Microthesaurus_t AS OBJECT
 (
     concept VARCHAR(50),
     descripteurs ListeDescripteurs_t
+);
+/
+
+-- Une table imbriquée pour stocker les microthésaurus.
+CREATE OR REPLACE TYPE ListeMicrothesaurus_t AS TABLE OF REF Microthesaurus_t;
+/
+
+CREATE OR REPLACE TYPE Thesaurus_t AS OBJECT
+(
+	titre VARCHAR(100),
+	microthesaurus ListeMicrothesaurus_t
 );
 /
