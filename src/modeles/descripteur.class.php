@@ -4,18 +4,18 @@
   * Implémente la classe descripteur.
   */
 
-include_once 'terme.class.php';
-include_once 'util/basededonnees.class.php';
+require_once 'terme.class.php';
+require_once 'util/basededonnees.class.php';
 
 class Descripteur extends Terme
 {
-	private MT; // Microthésaurus.
-	private TG; // Terme général.
-	private EP; // Employé pour.
-	private TA; // Termes associés.
-	private TS; // Termes spécifiques.
+	private $MT; // Microthésaurus.
+	private $TG; // Terme général.
+	private $EP; // Employé pour.
+	private $TA; // Termes associés.
+	private $TS; // Termes spécifiques.
 
-	private bdd;
+	private $bdd;
 
 	public function __construct($lib)
 	{
@@ -25,7 +25,28 @@ class Descripteur extends Terme
 
 	public function charger()
 	{
+		$sql = "SELECT * FROM Descripteur WHERE libelle = $this->libelle";
+		$resultat = $this->bdd->executerAvecResultat($sql);
 
+		if (count($resultat) != 0)
+		{
+			$this->MT = $resultat->MT;
+			$this->TG = $resultat->TG;
+			$this->EP = $resultat->EP;
+			$this->TA = $resultat->TA;
+			$this->TS = $resultat->TS;
+		}
+	}
+
+	public static function rechercher($libelle)
+	{
+		$sql = "SELECT * FROM Descripteur WHERE libelle LIKE %$libelle%";
+		return $this->bdd->executerAvecResultat($sql);
+	}
+
+	public function __toString()
+	{
+		return $this->libelle;
 	}
 }
 ?>

@@ -1,0 +1,8 @@
+{foreach from=$resultats item=resultat}
+	{$resultat}
+{foreachelse}
+	Pas de résultat
+	<form method="post" action="index.php?page=recherche">
+		<input type="text" name="libelle">
+	</form>
+{/foreach}

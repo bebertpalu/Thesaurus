@@ -83,14 +83,11 @@ footer {
 .content {
 	padding: 10px 0 0 0;
 	width: 760px;
-	float: left;	
+	float: left;
+	height: 100%;
 }
 .content li {
 	margin:20px;
-}
-.pic1 {
-	float:left;
-	padding:0 30px 10px 15px;
 }
 .content ul, .content ol { 
 	padding: 0 15px 15px 40px; 

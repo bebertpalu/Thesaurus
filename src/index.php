@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Projet BDD</title>
+		<title>Thesaurus</title>
 		<link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
 	</head>
 
@@ -20,20 +20,23 @@
         </ul>
     </nav>
   </header>
-
+  <section class="container">
+    <section class="content">
 <?php
-    include_once 'global/init.php';
-    
-    //On inclut le contrôleur s'il existe et s'il est spécifié
-    if (!empty($_GET['page']) && is_file('controleurs/'.$_GET['page'].'Controleur.php'))
+    if (!empty($_GET['page']) && is_file('controleurs/'.$_GET['page'].'.controleur.php'))
     {
-        include_once 'controleurs/'.$_GET['page'].'Controleur.php';
+        include_once 'controleurs/'.$_GET['page'].'.controleur.php';
     }
     else
-    {
-    	include_once 'controleurs/rechercheControleur.php';
+    {?>
+        <form method="post" action="index.php?page=recherche">
+            <input type="text" name="libelle">
+        </form>
+    <?php
     }
 ?>
+    </section>
+    </section>
 
     <footer class="container">
     <p>Copyright &copy; Groupe. All rights reserved. Design by <a href="#" title="J'ai rien mis">Thesaurus</a> 
