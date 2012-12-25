@@ -5,7 +5,7 @@
 
 CREATE OR REPLACE TYPE Terme_t AS OBJECT
 (
-    libelle VARCHAR(50)
+    libelle VARCHAR2(50)
 )
 NOT FINAL NOT INSTANTIABLE;
 /
@@ -16,15 +16,24 @@ CREATE OR REPLACE TYPE NonDescripteur_t UNDER Terme_t ();
 CREATE OR REPLACE TYPE Descripteur_t UNDER Terme_t ();
 /
 
--- Les tables imbriquées.
+-- Les tables imbriquées pour stocker des listes de termes.
 CREATE OR REPLACE TYPE ListeNonDescripteurs_t AS TABLE OF REF NonDescripteur_t;
 /
 CREATE OR REPLACE TYPE ListeDescripteurs_t AS TABLE OF REF Descripteur_t;
 /
 
--- On peut maintenant bien définir les types.
+-- Type Microthesaurus.
+CREATE OR REPLACE TYPE Microthesaurus_t AS OBJECT
+(
+    concept VARCHAR2(50),
+    descripteurs ListeDescripteurs_t
+);
+/
+
+-- Type Descripteur_t
 ALTER TYPE Descripteur_t ADD ATTRIBUTE
 (
+    MT REF Microthesaurus_t,
     TG REF Descripteur_t,
     EP ListeNonDescripteurs_t,
     TA ListeDescripteurs_t,
@@ -32,26 +41,22 @@ ALTER TYPE Descripteur_t ADD ATTRIBUTE
 )
 CASCADE;
 
+-- Type NonDescripteur_t
 ALTER TYPE NonDescripteur_t ADD ATTRIBUTE
 (
     EM REF Descripteur_t
 )
 CASCADE;
 
-CREATE OR REPLACE TYPE Microthesaurus_t AS OBJECT
-(
-    concept VARCHAR(50),
-    descripteurs ListeDescripteurs_t
-);
-/
 
 -- Une table imbriquée pour stocker les microthésaurus.
 CREATE OR REPLACE TYPE ListeMicrothesaurus_t AS TABLE OF REF Microthesaurus_t;
 /
 
+-- Type Thesaurus_t
 CREATE OR REPLACE TYPE Thesaurus_t AS OBJECT
 (
-	titre VARCHAR(100),
+	titre VARCHAR2(100),
 	microthesaurus ListeMicrothesaurus_t
 );
 /
