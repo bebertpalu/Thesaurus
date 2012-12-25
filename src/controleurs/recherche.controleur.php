@@ -1,7 +1,7 @@
 <?php
 /**
   * @author Abdelhamid Belarbi
-  * Effectue la recherche du libellé passé dans la variable $_POST.
+  * Effectue la recherche du libellé passé dans la variable $_GET.
   */
 
 require_once 'controleurs/libs/Smarty.class.php';
@@ -9,9 +9,9 @@ require_once 'modeles/descripteur.class.php';
 
 $template = new Smarty();
 
-if (!empty($_POST['libelle']))
+if (!empty($_GET['libelle']))
 {
-	$resultats = Descripteur::rechercher($_POST['libelle']);
+	$resultats = Descripteur::rechercher($_GET['libelle']);
 }
 else
 {

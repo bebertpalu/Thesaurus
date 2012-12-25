@@ -21,11 +21,12 @@ class BaseDeDonnees extends PDO
 	{
 		try
 		{
-			parent::__construct('oci:dbname='.$this->urlBdd, $this->utilisateur, $this->motDePasse);
+			parent::__construct('oci:dbname='.$this->nomBdd, $this->utilisateur, $this->motDePasse);
 		}
 		catch (Exception $e)
 		{
 			echo 'Connexion à la base de données impossible';
+			echo $e->getMessage();
 			die();
 		}
 	}
