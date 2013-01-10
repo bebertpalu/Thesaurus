@@ -19,8 +19,10 @@ CASCADE;
 
 CREATE OR REPLACE TYPE BODY Descripteur_t AS
 	MEMBER FUNCTION getTG RETURN VARCHAR2 IS
+    res Descripteur_t
 	BEGIN
-		RETURN DEREF(SELF.TG).libelle;
+        SELECT DEREF(self.TG) INTO res FROM DUAL;
+        RETURN res.libelle;
 	END;
 END;
 /
