@@ -8,6 +8,9 @@
 \usepackage{graphicx}
 %% Pour la police de caractères.
 \usepackage{fontspec}
+%% Pour les liens externes.
+\usepackage{hyperref}
+
 \setmainfont{Sansation Light}
 
 \begin{document}
@@ -28,7 +31,9 @@
 	\center{\today}
 \end{titlepage}
 
-\begin{chapter}{Mise en place}
+\tableofcontents
+
+\begin{chapter}{Genèse}
 	\begin{section}{Le groupe et le sujet}
 		Le groupe est constitué des sept personnes nommées sur la page de garde et le responsable du projet est Abdelhamid Belarbi
 		\footnote{Élu démocratiquement à 71,42 \% des voix.}.\\
@@ -125,32 +130,31 @@
 	\end{section}
 \end{chapter}
 
-\begin{section}*{Affaire à suivre}
-	Ainsi se termine notre analyse préliminaire, mais ce n'est pas fini.
-	Vous découvrirez de nombreux détails plus croustillants dans le prochain numéro dans lequel notre équipe d'intrépides concepteurs passera
-	à la version objet-relationnel du précédent schéma.
-\end{section}
+
 
 %% Sitographie
-\renewcommand\bibname{Sitographie}%% Changement du titre de bibliographie en sitographie.
+\renewcommand\bibname{Webographie}%% Changement du titre de bibliographie en webographie.
 \begin{thebibliography}{2}
 	\bibitem{Wikipedia}
 	L'encyclopédie que l'on ne présente plus, utile pour les définitions.\\
-	\emph{Adresse} : fr.wikipedia.org
+	\emph{Adresse} : \url{fr.wikipedia.org}
 	~\\
 	\bibitem{Inpes}
-	Un thésaurus très bien fait qui présenté dans les trois modes d'indexation.\\
-	\emph{Alphabétique structuré} : www.inpes.sante.fr/30000/pdf/thesaurus/thes\_01.pdf\\
-	\emph{Microthésaurus} : www.inpes.sante.fr/30000/pdf/thesaurus/thes\_02.pdf\\
-	\emph{Alphabétique permuté} : www.inpes.sante.fr/30000/pdf/thesaurus/thes\_03.pdf
+	Un thésaurus très bien fait qui est présenté dans les trois modes d'indexation.\\
+	\emph{Alphabétique structuré} : \url{www.inpes.sante.fr/30000/pdf/thesaurus/thes\_01.pdf}\\
+	\emph{Microthésaurus} : \url{www.inpes.sante.fr/30000/pdf/thesaurus/thes\_02.pdf}\\
+	\emph{Alphabétique permuté} : \url{www.inpes.sante.fr/30000/pdf/thesaurus/thes\_03.pdf}
 	~\\
 	\bibitem{Bdsp}
 	Le (très) gros thésaurus de la Banque de données en Santé Publique, très instructif.
-	\emph{Adresse} : asp.bdsp.ehesp.fr/Thesaurus/
+	\emph{Adresse} : \url{asp.bdsp.ehesp.fr/Thesaurus/}
 	~\\
 	\bibitem{Unesco}
 	Le thésaurus de l'Unesco, une autre aide précieuse pour bien comprendre les principes.
-	\emph{Adresse} : databases.unesco.org/thesfr/
+	\emph{Adresse} : \url{databases.unesco.org/thesfr/}
 	~\\
+	\bibitem{Oracle SQL reference}
+	La documentation Oracle officielle pour faire du SQL dans les normes.
+	\emph{Adresse} : \url{docs.oracle.com/cd/E11882_01/server.112/e26088/toc.htm}
 \end{thebibliography}
 \end{document}
