@@ -9,7 +9,11 @@
 %% Pour la police de caractères.
 \usepackage{fontspec}
 %% Pour les liens externes.
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
+%% Pour pouvoir écrire du code.
+\usepackage{minted}
+%% Arrière plan des blocs de code.
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
 
 \setmainfont{Sansation Light}
 
@@ -41,7 +45,8 @@
 		\emph{Galaxie}, \emph{Étoile} ou bien \emph{Voie Lactée}.
 	\end{section}
 	
-	\begin{section}{Définitions}\label{aspic}
+	\begin{section}{Définitions}
+	\label{aspic}
 		Internet regorge de définitions de thésaurus et des notions qui s’y rapportent (voir \cite{Wikipedia}, \cite{Inpes}, \cite{Bdsp} et \cite{Unesco}).
 		Toutefois, beaucoup d’entre elles sont peu claires, très vagues voire obscures. En tant que concepteurs d’une application, nous nous devions de réunir les
 		meilleures définitions, les clarifier et les spécifier sans ambiguïté.\\
@@ -99,7 +104,7 @@
 		\begin{figure}[h]
 			\label{sucresale}
 			\begin{center}
-				\includegraphics[width=15cm]{Use-Case.png}
+				\includegraphics[width=12cm]{Use-Case.png}
 				\caption{Le diagramme des cas d'utilisation}
 			\end{center}
 		\end{figure}~\\
@@ -115,7 +120,10 @@
 			\end{itemize}
 		\end{subsection}
 	\end{section}
-	
+\end{chapter}
+
+\begin{chapter}{Conception}
+\label{tournevis}
 	\begin{section}{Diagramme des classes}
 		\begin{figure}[h]
 			\label{classeur}
@@ -125,11 +133,140 @@
 			\end{center}
 		\end{figure}~\\
 		
-		Le diagramme parle de lui-même. Toutes les définitions données dans la section \ref{aspic} sont appliquées, d'où l'utilité de la démarche de clarification
-		effectuée.\\
+		Le diagramme parle de lui-même. Toutes les définitions données dans la section \ref{aspic} sont appliquées, d'où l'utilité de la démarche de clarification effectuée.\\
+	\end{section}
+\newpage
+	\begin{section}{Base de données}
+	Le schéma objet-relationnel est directement inspiré du diagramme des classes. Il se présente de la manière suivante (code ODL).\\~\\
+	\begin{minted}[bgcolor=bg]{java}
+interface Terme {
+	libelle string;
+}
+
+class Descripteur:Terme {
+	relationship list(NonDescripteur) EP; // Employé pour
+	inverse NonDescripteur::EM;
+	relationship list(Descripteur) TA;    // Termes associés
+	inverse Descripteur::TA;
+	relationship list(Descripteur) TS;    // Termes spécifiques
+	inverse Descripteur::TG;
+	relationship Descripteur TG;          // Terme général
+	inverse Descripteur TS;
+	relationship Microthesaurus MT;
+	inverse Microthesaurus::concept;
+}
+
+class NonDescripteur:Terme {
+	relationship Descripteur EM;          // Employer
+}
+
+class Microthesaurus {
+	concept string;
+	relationship list(Descripteur) descripteurs;
+	inverse Descripteur::MT
+}
+
+class Thesaurus {
+	titre string;
+	relationship list(Microthesaurus) microthesaurus;
+}
+	\end{minted}
+
+	Concernant la classe \emph{Thesaurus}, il est à noter qu'en elle est
+	inutile puisque nous ne traitons qu'un seul thésaurus. Mais par souci de clarté et par respect des définitions nous la mettons quand même.\\
+
+
+	Pour ce qui est des autres classes la transformation est triviale, chaque lien d'association est traduit par la relation correspondante. Nous avons choisis d'utiliser des \emph{list} pour représenter les données multiples.
 	\end{section}
 \end{chapter}
 
+\begin{chapter}{Réalisation}
+	\begin{section}{Choix des outils}
+	L'essor des technologies du web ces dernières années à fait que nous avions une large palette d'outils à notre disposition. Nous avons fait le choix,
+	lors d'une réunion de groupe, d'utiliser les outils suivants :
+	\begin{itemize}
+		\item Pour le back-end, le langage PHP avec un projet organisé selon le modèle MVC.
+		\item La base de données sera gérée par Oracle Express utilisant le langage SQL.
+		\item Pour le front-end, une interface Html/Css tout ce qu'il y a de plus classique.
+	\end{itemize}~\\
+
+	En plus des outils déjà cités nous avons décidé d'utiliser \emph{Smarty}, un générateur de template pour PHP qui simplifie grandement l'affichage des vues.\\
+	Les versions du projet furent gérées par \emph{Git}. D'ailleurs voici le lien vers le dépôt :
+
+	\begin{center} \url{https://github.com/AbdelBa/Thesaurus}\end{center}
+
+	Nous avons aussi discuté via Google Groupes pour organiser les réunions, poser les questions publiques et synchroniser notre travail.
+	\end{section}
+
+	\begin{section}{Répartition des tâches}
+		La taille du groupe nous permet de travailler sur chaque partie du projet simultanément, nous avons donc divisé le groupe en sous-équipes,
+		chacune chargée d'une partie de la besogne.
+		\begin{enumerate}
+			\item{Équipe SQL} : Issam et Abdelhamid
+			\item{Équipe PHP} : Franck, Marwan, Cyril et Mohamed
+			\item{Équipe Graphisme} : Nordine
+		\end{enumerate}
+
+		L'équipe \emph{SQL} fut chargée de l'implémentation de la base de données. C'est à dire la création des types objets, des tables ainsi 
+		que tout élément nécessaire au bon fonctionnement de l'application.\\
+		L'équipe PHP devait programmer les solutions à intégrer au modèle MVC. Ce qui signifie faire les classes, les scripts de connexion à la 
+		base de données, la logique metier...\\
+		L'équipe singleton de Nordine était chargée de faire une interface graphique simple et sobre et de paufiner le travail de l'équipe PHP
+		sur les vues.
+	\end{section}
+
+	\begin{section}{Details techniques}
+		Jusqu'à maintenant tout se passait bien, une immense plaine verdoyante s'étendait de toutes parts à perte de vue et la brise légère faisait
+		onduler nos cheveux de manière quasi-imperceptible.\\ Mais lorsqu'il s'est agi de programmer, commencèrent à émerger ça et là divers tourments
+		que voici énumérés.
+
+		\begin{subsection}{L'affaire Oracle Express}
+			Oracle propose sur son site une version de son célèbre SGBD dénommée Oracle Express. À notre grand désarroi cette version n'est disponible
+			que pour Windows x32 ou Linux x64 et c'est tout.\\
+			Autant dire que les deux membres du groupe possesseurs d'un ordinateur Apple étaient hors course, eux qui fanfaronnaient si souvent avec leur
+			machine en aluminium ne pouvaient même pas faire fonctionner Oracle Express dans une machine virtuelle.\\
+			Mais l'affaire fut vite réglée lorsque ils prirent la décision de venir travailler à l'université.\\
+
+			Bien sûr il y avait un outil en ligne fourni par Oracle même, Apex (voir [\ref{cloche}]), mais la base de données qui est procurée au développeur n'est
+			disponible qu'au sein même d'Apex sans possibilité de connexion externe.
+		\end{subsection}
+
+		\begin{subsection}{SQL}
+			Le lecteur attentif aura remarqué que dans le chapitre \ref{tournevis}, les relations entre les différentes classes sont drôlement
+			entremêlées (voyez la classe \emph{Descripteur}). SQL n'offre pas la possibilité de faire des références en avant,
+			ce qui pose un problème lorsque deux types dépendent l'un de l'autre. La solution réside dans ce qui est appelé dans la documentation les types
+			incomplets. Voici comment nous avons mis en oeuvre cette solution (voir le fichier \emph{src/modeles/sql/types.sql}) : \\~\\
+			\begin{minted}[bgcolor=bg]{sql}
+-- Créations de types incomplets pour les références en arrière.
+CREATE OR REPLACE TYPE NonDescripteur_t UNDER Terme_t (); /
+CREATE OR REPLACE TYPE Descripteur_t UNDER Terme_t (); /
+
+-- Une table imbriquées pour stocker une liste de non descripteurs.
+CREATE OR REPLACE TYPE ListeNonDescripteurs_t AS 
+    TABLE OF REF NonDescripteur_t; /
+
+-- Type Descripteur_t
+ALTER TYPE Descripteur_t ADD ATTRIBUTE (
+    EP ListeNonDescripteurs_t
+)CASCADE;
+
+-- Type NonDescripteur_t
+ALTER TYPE NonDescripteur_t ADD ATTRIBUTE (
+    EM REF Descripteur_t
+)CASCADE;
+			\end{minted}
+		\end{subsection}
+
+		\begin{subsection}{PDO}	
+			Nous avons d'abord un peu hésité à utiliser le driver PDO pour oracle de PHP car il est écrit dans la documentation [\ref{claque}], 
+			dans un grand cadre rouge que \og Ce module est EXPERIMENTAL. Cela signifie que le comportement de ces fonctions, leurs noms et, concrètement, TOUT ce qui est documenté ici peut changer dans un futur proche, SANS PREAVIS ! \fg \\
+			Comme le projet ne devait pas durer trop longtemps et que l'ancien driver (OCI8) n'était pas fait en objet nous avons quand même utilisé PDO.
+		\end{subsection}
+	\end{section}
+\end{chapter}
+
+\begin{chapter}{Résultat}
+\end{chapter}
 
 
 %% Sitographie
@@ -146,15 +283,24 @@
 	\emph{Alphabétique permuté} : \url{www.inpes.sante.fr/30000/pdf/thesaurus/thes\_03.pdf}
 	~\\
 	\bibitem{Bdsp}
-	Le (très) gros thésaurus de la Banque de données en Santé Publique, très instructif.
+	Le (très) gros thésaurus de la Banque de données en Santé Publique, très instructif.\\
 	\emph{Adresse} : \url{asp.bdsp.ehesp.fr/Thesaurus/}
 	~\\
 	\bibitem{Unesco}
-	Le thésaurus de l'Unesco, une autre aide précieuse pour bien comprendre les principes.
+	Le thésaurus de l'Unesco, une autre aide précieuse pour bien comprendre les principes.\\
 	\emph{Adresse} : \url{databases.unesco.org/thesfr/}
 	~\\
 	\bibitem{Oracle SQL reference}
-	La documentation Oracle officielle pour faire du SQL dans les normes.
+	La documentation Oracle officielle pour faire du SQL dans les normes.\\
 	\emph{Adresse} : \url{docs.oracle.com/cd/E11882_01/server.112/e26088/toc.htm}
+	~\\
+	\bibitem{PDO doc}\label{claque}
+	La documentation de PHP PDO.\\
+	\emph{Adresse} : \url{fr2.php.net/manual/fr/ref.pdo-oci.php}
+	~\\
+	\bibitem{Oracle Apex}\label{cloche}
+	Le service web qui fournit une base de données consultable via le navigateur.\\
+	\emph{Adresse} : \url{apex.oracle.com}
 \end{thebibliography}
+
 \end{document}
