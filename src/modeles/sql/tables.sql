@@ -15,3 +15,9 @@ CREATE TABLE Microthesaurus OF Microthesaurus_t
 
 CREATE TABLE Thesaurus OF Thesaurus_t 
 	NESTED TABLE microthesaurus STORE AS microthesaurus_tab;
+
+CREATE TABLE Utilisateur
+(
+    login VARCHAR(50),
+    mdp VARCHAR(128)
+);

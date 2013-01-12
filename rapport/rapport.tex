@@ -140,43 +140,76 @@
 	Le schéma objet-relationnel est directement inspiré du diagramme des classes. Il se présente de la manière suivante (code ODL).\\~\\
 	\begin{minted}[bgcolor=bg]{java}
 interface Terme {
-	libelle string;
+	attribute string libelle;
 }
 
 class Descripteur:Terme {
-	relationship list(NonDescripteur) EP; // Employé pour
-	inverse NonDescripteur::EM;
-	relationship list(Descripteur) TA;    // Termes associés
-	inverse Descripteur::TA;
-	relationship list(Descripteur) TS;    // Termes spécifiques
-	inverse Descripteur::TG;
-	relationship Descripteur TG;          // Terme général
-	inverse Descripteur TS;
-	relationship Microthesaurus MT;
-	inverse Microthesaurus::concept;
+	relationship list(NonDescripteur) EP      // Employé pour
+	             inverse NonDescripteur::EM;
+	relationship list(Descripteur) TA         // Termes associés
+	             inverse Descripteur::TA;
+	relationship list(Descripteur) TS         // Termes spécifiques
+	             inverse Descripteur::TG;
+	relationship Descripteur TG               // Terme général
+	             inverse Descripteur TS;
+	relationship Microthesaurus MT
+	             inverse Microthesaurus::concept;
 }
 
 class NonDescripteur:Terme {
-	relationship Descripteur EM;          // Employer
+	relationship Descripteur EM;              // Employer
 }
 
 class Microthesaurus {
-	concept string;
-	relationship list(Descripteur) descripteurs;
-	inverse Descripteur::MT
+	attribute string concept;
+	relationship list(Descripteur) descripteurs
+	             inverse Descripteur::MT
 }
 
 class Thesaurus {
-	titre string;
+	attribute string titre;
 	relationship list(Microthesaurus) microthesaurus;
 }
 	\end{minted}
 
-	Concernant la classe \emph{Thesaurus}, il est à noter qu'en elle est
-	inutile puisque nous ne traitons qu'un seul thésaurus. Mais par souci de clarté et par respect des définitions nous la mettons quand même.\\
+	Concernant la classe \emph{Thesaurus}, il est à noter qu'elle est
+	inutile puisque nous ne traitons qu'un seul thésaurus. Mais par souci de clarté et par respect des définitions et du sujet 
+	nous la mettons quand même.\\
 
 
-	Pour ce qui est des autres classes la transformation est triviale, chaque lien d'association est traduit par la relation correspondante. Nous avons choisis d'utiliser des \emph{list} pour représenter les données multiples.
+	Pour ce qui est des autres classes la transformation est triviale, chaque lien d'association est traduit par la relation
+	correspondante. Nous avons choisi d'utiliser des \emph{list} pour représenter les données multiples. Les relations inter-objets seront
+	explicitées grâce au type \emph{REF}.\\
+
+	Remarquez de plus que les opérations des objets ne sont pas représentées ici car il ne s'agit globalement que d'accesseurs.\\
+	\end{section}
+
+	\begin{section}{Et les vues}
+		Il est assez judicieux de penser à créer des vues pour représenter les différents modes d'indexation afin notamment d'optimiser le temps
+		de travail du serveur. \\
+		On peut penser par exemple à une vue \emph{listeAlphabetiquePermutee} qui se présenterait de la sorte :\\
+		\begin{minted}[bgcolor=bg]{java}
+view listeAlphabetiquePermutee {
+	libelle string;
+	TG string;               // Le libellé du terme général
+	TA list(string);         // Les libellés des termes associés
+	EP list(string);         // Les libellés des termes employés
+}
+		\end{minted}
+
+		En étudiant cette vue d'assez près on se rend compte qu'elle possède à peu de chose près la même structure que la table \emph{Descripteur}.
+		C'est sur cette table (et uniquement celle là) qu'il faut effectuer une requête pour construire cette vue. C'est donc une sorte de redondance
+		des données.\\
+
+		Pour mettre à jour les vues il faut implémenter différents triggers qui se déclencheront à la mise à jour des tables concernées (ici \emph{Descripteur}).
+		Ces ajoutent des traitements du SGBD  pas forcément utiles.
+
+		Le mieux pour représenter les 3 modes est d'effectuer 
+		une requête par mode. Ainsi nous tirons parti de la notation pointée de l'objet-relaionnel 
+		qui nous permet d'écrire \mint{java}|self.tg.libelle| plutôt que de faire une jointure comme en relationnel.\\
+
+		Ce sont toutes ces raisons qui nous dispensent d'écrire des vues dans notre base objet-relationnel.
+
 	\end{section}
 \end{chapter}
 
@@ -260,14 +293,14 @@ ALTER TYPE NonDescripteur_t ADD ATTRIBUTE (
 		\begin{subsection}{PDO}	
 			Nous avons d'abord un peu hésité à utiliser le driver PDO pour oracle de PHP car il est écrit dans la documentation [\ref{claque}], 
 			dans un grand cadre rouge que \og Ce module est EXPERIMENTAL. Cela signifie que le comportement de ces fonctions, leurs noms et, concrètement, TOUT ce qui est documenté ici peut changer dans un futur proche, SANS PREAVIS ! \fg \\
-			Comme le projet ne devait pas durer trop longtemps et que l'ancien driver (OCI8) n'était pas fait en objet nous avons quand même utilisé PDO.
+			Comme le projet ne devait pas durer trop longtemps et que l'ancien driver (OCI8) n'était pas fait en objet nous avons quand même utilisé PDO.\\
+
+			Les problèmes rencontrés avec de module ne se situaient pas là mais plutôt au niveau de la configuration des 
+			différents acteurs, à savoir PHP (via le fichier \emph{.ini}) et le serveur Apache. Il faut savoir que sous
+			Windows, le driver PHP ne fonctionne qu'avec un serveur 32 bits, étrange...
 		\end{subsection}
 	\end{section}
 \end{chapter}
-
-\begin{chapter}{Résultat}
-\end{chapter}
-
 
 %% Sitographie
 \renewcommand\bibname{Webographie}%% Changement du titre de bibliographie en webographie.
