@@ -21,7 +21,7 @@
 \begin{titlepage}
 	\vspace*{\fill}
 	\begin{center}
-		{\Huge Thésaurus, l'analyse}\\
+		{\Huge Thésaurus, le rapport}\\
 		\vspace{\fill}
 		Franck Petitdemange \\
 		Nordine El Hassouni \\
@@ -143,7 +143,7 @@ interface Terme {
 	attribute string libelle;
 }
 
-class Descripteur:Terme {
+class Descripteur:Terme (extent Descripteurs) {
 	relationship list(NonDescripteur) EP      // Employé pour
 	             inverse NonDescripteur::EM;
 	relationship list(Descripteur) TA         // Termes associés
@@ -151,22 +151,22 @@ class Descripteur:Terme {
 	relationship list(Descripteur) TS         // Termes spécifiques
 	             inverse Descripteur::TG;
 	relationship Descripteur TG               // Terme général
-	             inverse Descripteur TS;
+	             inverse Descripteur::TS;
 	relationship Microthesaurus MT
 	             inverse Microthesaurus::concept;
 }
 
-class NonDescripteur:Terme {
+class NonDescripteur:Terme (extent NonDescripteurs) {
 	relationship Descripteur EM;              // Employer
 }
 
-class Microthesaurus {
+class Microthesaurus (extent Microthesaurus) {
 	attribute string concept;
 	relationship list(Descripteur) descripteurs
 	             inverse Descripteur::MT
 }
 
-class Thesaurus {
+class Thesaurus (extent Thesaurus) {
 	attribute string titre;
 	relationship list(Microthesaurus) microthesaurus;
 }
@@ -202,10 +202,10 @@ view listeAlphabetiquePermutee {
 		des données.\\
 
 		Pour mettre à jour les vues il faut implémenter différents triggers qui se déclencheront à la mise à jour des tables concernées (ici \emph{Descripteur}).
-		Ces ajoutent des traitements du SGBD  pas forcément utiles.
+		Ces triggers ajoutent des traitements du SGBD  pas forcément utiles.
 
 		Le mieux pour représenter les 3 modes est d'effectuer 
-		une requête par mode. Ainsi nous tirons parti de la notation pointée de l'objet-relaionnel 
+		une requête par mode. Ainsi nous tirons parti de la notation pointée de l'objet-relationnel 
 		qui nous permet d'écrire \mint{java}|self.tg.libelle| plutôt que de faire une jointure comme en relationnel.\\
 
 		Ce sont toutes ces raisons qui nous dispensent d'écrire des vues dans notre base objet-relationnel.
@@ -222,11 +222,10 @@ view listeAlphabetiquePermutee {
 		\item La base de données sera gérée par Oracle Express utilisant le langage SQL.
 		\item Pour le front-end, une interface Html/Css tout ce qu'il y a de plus classique.
 	\end{itemize}~\\
-
 	En plus des outils déjà cités nous avons décidé d'utiliser \emph{Smarty}, un générateur de template pour PHP qui simplifie grandement l'affichage des vues.\\
 	Les versions du projet furent gérées par \emph{Git}. D'ailleurs voici le lien vers le dépôt :
 
-	\begin{center} \url{https://github.com/AbdelBa/Thesaurus}\end{center}
+	\begin{center} \url{github.com/AbdelBa/Thesaurus}\end{center}
 
 	Nous avons aussi discuté via Google Groupes pour organiser les réunions, poser les questions publiques et synchroniser notre travail.
 	\end{section}
@@ -235,8 +234,8 @@ view listeAlphabetiquePermutee {
 		La taille du groupe nous permet de travailler sur chaque partie du projet simultanément, nous avons donc divisé le groupe en sous-équipes,
 		chacune chargée d'une partie de la besogne.
 		\begin{enumerate}
-			\item{Équipe SQL} : Issam et Abdelhamid
-			\item{Équipe PHP} : Franck, Marwan, Cyril et Mohamed
+			\item{Équipe SQL} : Issam, Marwan et Abdelhamid
+			\item{Équipe PHP} : Franck, Cyril et Mohamed
 			\item{Équipe Graphisme} : Nordine
 		\end{enumerate}
 
@@ -260,15 +259,16 @@ view listeAlphabetiquePermutee {
 			machine en aluminium ne pouvaient même pas faire fonctionner Oracle Express dans une machine virtuelle.\\
 			Mais l'affaire fut vite réglée lorsque ils prirent la décision de venir travailler à l'université.\\
 
-			Bien sûr il y avait un outil en ligne fourni par Oracle même, Apex (voir [\ref{cloche}]), mais la base de données qui est procurée au développeur n'est
-			disponible qu'au sein même d'Apex sans possibilité de connexion externe.
+			Bien sûr il y a bien un outil en ligne fourni par Oracle : Apex (voir [\ref{cloche}]), mais la base de données qui est mise à la disposition du
+			développeur n'est disponible qu'au sein même d'Apex sans possibilité de connexion externe.
 		\end{subsection}
 
 		\begin{subsection}{SQL}
-			Le lecteur attentif aura remarqué que dans le chapitre \ref{tournevis}, les relations entre les différentes classes sont drôlement
-			entremêlées (voyez la classe \emph{Descripteur}). SQL n'offre pas la possibilité de faire des références en avant,
+			Le lecteur attentif aura remarqué que dans le chapitre \ref{tournevis} (p.\pageref{tournevis}),
+			les relations entre les différentes classes sont drôlement entremêlées (voyez la classe \emph{Descripteur}).
+			SQL n'offre pas la possibilité de faire des références en avant,
 			ce qui pose un problème lorsque deux types dépendent l'un de l'autre. La solution réside dans ce qui est appelé dans la documentation les types
-			incomplets. Voici comment nous avons mis en oeuvre cette solution (voir le fichier \emph{src/modeles/sql/types.sql}) : \\~\\
+			incomplets. Voici comment nous avons mis en oeuvre cette solution (voir le fichier \emph{/src/modeles/sql/types.sql}) : \\~\\
 			\begin{minted}[bgcolor=bg]{sql}
 -- Créations de types incomplets pour les références en arrière.
 CREATE OR REPLACE TYPE NonDescripteur_t UNDER Terme_t (); /
@@ -300,6 +300,75 @@ ALTER TYPE NonDescripteur_t ADD ATTRIBUTE (
 			Windows, le driver PHP ne fonctionne qu'avec un serveur 32 bits, étrange...
 		\end{subsection}
 	\end{section}
+\end{chapter}
+
+\begin{chapter}{Résultat \& Discussion}
+	\begin{section}{Résultat}
+		L'application web que nous avons finalement réalisé se contente des fonctionnalités minimales demandées.\\
+		Cela pour 2 raisons majeures :
+		\begin{itemize}
+			\item Le manque d'adéquation entre PHP et Oracle et entre Oracle et nos machines personnelles.
+			\item Nous avons préférés mettre l'accent sur l'analyse théorique et la base de données.
+		\end{itemize}~\\
+		Notre application propose principalement une fonctionnalité de recherche qui présente le terme demandé avec toutes ses relations sémantiques
+		définies en base de données.
+		Le thésaurus complet est composé de deux microthésaurus que voici.\\
+		\begin{minted}[bgcolor=bg]{sql}
+Corps orbitant
+	Aerolithe (aerolithe)
+	Asteroide
+	Satellite 
+		Satellite artificiel
+		Satellite naturel
+	Planete
+		Planete tellurique (planete rocheuse, planete interne)
+			Planete Terre (la planete bleue, Terre, Monde)
+			Planete Mars (la planete rouge)
+			Planete Venus
+		Planete gazeuse (geante gazeuse, geante jovienne)
+			Planete Jupiter
+			Planete Saturne
+		Planete naine
+
+Galaxies
+	Astre (corps celeste)
+	Nebuleuse
+	Amas galactique
+	Galaxie
+		Voie lactee (Notre galaxie, la Galaxie)
+	Radiogalaxie
+	\end{minted}
+	On comprend aisément qu'il s'agit des microthesaurus des corps orbitants et des galaxies avec les descripteurs hiérarchisés et leurs non descripteurs entre
+	parenthèses.\\
+	Faire une recherche sur le terme Planete tellurique vous donnera donc des informations du genre\\
+	\begin{minted}[bgcolor=bg]{java}
+Descripteur : Planete tellurique
+Microthesaurus : Corps orbitant
+Terme general : Planete
+Termes specifiques : Planete Terre, Planete Mars, Planete Venus
+Non descripteurs : planete rocheuse, planete interne
+	\end{minted}
+	\end{section}
+
+	\begin{section}{Discussion}
+
+	\begin{subsection}{PHP}
+		Nous avons soulevé le problème rencontré avec PHP PDO. Aurions nous pu faire autrement ? Bien sûr en utilisant le driver JDBC de Java et en faisant une 
+		application J2EE. Mais pouvions nous prévoir qu'il y aurait autant de difficultés avec PHP ? Non, évidemment.\\
+		L'erreur fut sûrement de ne pas effectuer de recherches très approfondies avant de choisir ce langage auquel nous étions habitué et auquel nous faisions
+		toute confiance.
+	\end{subsection}
+
+	\begin{subsection}{Oracle}
+		Nous avons aussi soulevé le problème du serveur Oracle Express qui n'était pas disponible pour tout le monde. Nous aurions pu utiliser là aussi un autre
+		outil qui est PostgreSQL qui propose aussi des fonctionnalités objet-relationnel.\\
+		Mais nous souhaitions mettre en oeuvre nos connaissances sur Oracle acquises en cours. Là encore impossible de prévoir tous les obstacles qui se sont
+		dressés sur notre route. \\
+		Mais nous les surmontâmes et nous en sommes satisfaits !
+	\end{subsection}
+	\end{section}
+
+
 \end{chapter}
 
 %% Sitographie
