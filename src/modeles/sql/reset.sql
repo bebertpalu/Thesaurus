@@ -18,3 +18,4 @@ DROP TABLE Thesaurus;
 DROP TABLE Microthesaurus;
 DROP TABLE Descripteur;
 DROP TABLE NonDescripteur;
+DROP TABLE Utilisateur;

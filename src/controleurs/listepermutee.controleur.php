@@ -1,6 +1,6 @@
 <?php
 /**
-  * @author Bob !
+  * @author Cyril Monmouton
   * Permet l'affichage du thésaurus par liste permutée.
  **/
 

@@ -12,9 +12,9 @@ class BaseDeDonnees extends PDO
 
 	public function __construct()
 	{
-		$nomBdd = 'localhost/XE';
-		$utilisateur = 'system';
-		$motDePasse = 'root';	
+		$nomBdd = 'venus/master.info';
+		$utilisateur = 'abelarbi';
+		$motDePasse = 'abelarbi';	
 	}
 
 	private function connecter()
@@ -26,8 +26,7 @@ class BaseDeDonnees extends PDO
 		catch (Exception $e)
 		{
 			echo 'Connexion à la base de données impossible';
-			echo $e->getMessage();
-			die();
+			die($e->getMessage());
 		}
 	}
 
