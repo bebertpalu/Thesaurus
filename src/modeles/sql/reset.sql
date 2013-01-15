@@ -10,7 +10,6 @@ DROP TYPE NonDescripteur_t FORCE;
 DROP TYPE ListeNonDescripteurs_t FORCE;
 DROP TYPE ListeDescripteurs_t FORCE;
 DROP TYPE ListeMicrothesaurus_t FORCE;
-DROP TYPE VarcharTab_t FORCE;
 DROP TYPE Terme_t FORCE;
 
 

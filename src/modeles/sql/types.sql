@@ -1,3 +1,4 @@
+
 /*
  * Auteur : Abdelhamid Belarbi
  * Script de création des types.
