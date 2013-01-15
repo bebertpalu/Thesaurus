@@ -40,7 +40,7 @@ class Descripteur extends Terme
 
 	public static function rechercher($libelle)
 	{
-		$sql = "SELECT * FROM Descripteur WHERE libelle LIKE %$libelle%";
+		$sql = "SELECT * FROM Descripteur"; // WHERE libelle LIKE %$libelle%";
 		$bdd = new BaseDeDonnees();
 		return $bdd->executerAvecResultat($sql);
 	}

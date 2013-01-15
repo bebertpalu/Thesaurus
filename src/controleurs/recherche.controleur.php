@@ -12,7 +12,7 @@ ini_set('date.timezone', 'Europe/Paris');
 
 $template = new Smarty();
 
-if (!empty($_GET['libelle']))
+if (!empty($_POST['libelle']))
 {
 	$resultats = Descripteur::rechercher($_POST['libelle']);
 }
