@@ -1,8 +1,35 @@
 /*
  * Auteur : Issame Amal et Abdelhamid Belarbi
- * Script de remplissage de la base (voir rapport).
- */
- 
+ * Script de remplissage de la base.
+
+Le thesaurus se presente ainsi : 
+
+Corps orbitant
+        Aerolithe (aerolite)
+        Asteroide 
+        Satellite 
+                Satellite artificiel
+                Satellite naturel
+        Planete
+                Planete tellurique (planete rocheuse, planete interne)
+                        Planete Terre (la planete bleue, Terre, Monde)
+                        Planete Mars (la planete rouge)
+                        Planete Venus
+                Planete gazeuse (geante gazeuse, geante jovienne)
+                        Planete Jupiter
+                        Planete Saturne
+                Planete naine
+                
+Galaxies
+         Astre (corps celeste)
+         Nebuleuse
+         Amas galactique
+         Galaxie
+                 Voie lactee (Notre galaxie, la Galaxie)
+         Radiogalaxie
+
+*/
+
 -- Enregistre le lien entre le microthésaurus et le descripteur.
 CREATE OR REPLACE PROCEDURE lienMTetDESC (libelle IN VARCHAR2, mtConcept IN VARCHAR2)
 IS
@@ -121,29 +148,45 @@ EXECUTE lienEMetEP('Planete gazeuse', 'Geante gazeuse');
 EXECUTE lienEMetEP('Planete gazeuse', 'Geante jovienne');
 COMMIT;
 
-/*
-Corps orbitant
-        Aerolithe (aerolite)
-        Asteroide 
-        Satellite 
-                Satellite artificiel
-                Satellite naturel
-        Planete
-                Planete tellurique (planete rocheuse, planete interne)
-                        Planete Terre (la planete bleue, Terre, Monde)
-                        Planete Mars (la planete rouge)
-                        Planete Venus
-                Planete gazeuse (geante gazeuse, geante jovienne)
-                        Planete Jupiter
-                        Planete Saturne
-                Planete naine
-                
-Galaxies
-         Astre (corps celeste)
-         Nebuleuse
-         Amas galactique
-         Galaxie
-                 Voie lactee (Notre galaxie, la Galaxie)
-         Radiogalaxie
 
-*/
+-- Le deuxieme microthésaurus.
+INSERT INTO Microthesaurus VALUES ('Galaxies', ListeDescripteurs_t());
+
+INSERT INTO Descripteur VALUES 
+('Astre', NULL, NULL, ListeNonDescripteurs_t(), ListeDescripteurs_t(), ListeDescripteurs_t());
+INSERT INTO Descripteur VALUES 
+('Amas galactique', NULL, NULL, ListeNonDescripteurs_t(), ListeDescripteurs_t(), ListeDescripteurs_t());
+INSERT INTO Descripteur VALUES 
+('Galaxie', NULL, NULL, ListeNonDescripteurs_t(), ListeDescripteurs_t(), ListeDescripteurs_t());
+INSERT INTO Descripteur VALUES 
+('Nebuleuse', NULL, NULL, ListeNonDescripteurs_t(), ListeDescripteurs_t(), ListeDescripteurs_t());
+INSERT INTO Descripteur VALUES 
+('Voie lactee', NULL, NULL, ListeNonDescripteurs_t(), ListeDescripteurs_t(), ListeDescripteurs_t());
+INSERT INTO Descripteur VALUES 
+('Radiogalaxie', NULL, NULL, ListeNonDescripteurs_t(), ListeDescripteurs_t(), ListeDescripteurs_t());
+COMMIT;
+
+INSERT INTO NonDescripteur VALUES ('Corps celeste', NULL);
+INSERT INTO NonDescripteur VALUES ('Notre galaxie', NULL);
+INSERT INTO NonDescripteur VALUES ('La Galaxie', NULL);
+COMMIT;
+
+EXECUTE lienMTetDESC('Astre', 'Galaxies');
+EXECUTE lienMTetDESC('Nebuleuse', 'Galaxies');
+EXECUTE lienMTetDESC('Amas galactique', 'Galaxies');
+EXECUTE lienMTetDESC('Voie lactee', 'Galaxies');
+EXECUTE lienMTetDESC('Radiogalaxie', 'Galaxies');
+EXECUTE lienMTetDESC('Galaxie', 'Galaxies');
+COMMIT;
+
+EXECUTE lienTGetTS('Astre', 'Nebuleuse');
+EXECUTE lienTGetTS('Astre', 'Amas galactique');
+EXECUTE lienTGetTS('Astre', 'Galaxie');
+EXECUTE lienTGetTS('Astre', 'Radiogalaxie');
+EXECUTE lienTGetTS('Galaxie', 'Voie lactee');
+COMMIT;
+
+EXECUTE lienEMetEP('Astre', 'Corps celeste');
+EXECUTE lienEMetEP('Voie lactee', 'Notre galaxie');
+EXECUTE lienEMetEP('Voie lactee', 'La Galaxie');
+COMMIT;
